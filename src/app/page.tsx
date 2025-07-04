@@ -1,3 +1,3 @@
 export default function HomePage() {
-  return null;
+  return <div>Welcome to the Home Page!</div>;
 } 
