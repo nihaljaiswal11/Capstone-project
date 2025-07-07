@@ -1,3 +1,3 @@
 export default function SearchPage() {
-  return null;
+  return <div>Search Results (placeholder)</div>;
 } 
