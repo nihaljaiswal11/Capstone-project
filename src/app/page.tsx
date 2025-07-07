@@ -1,6 +1,6 @@
-import ArticleDetailPage from "./article/[slug]/page";
-import BookmarksPage from "./bookmarks/page";
+"use client";
+import HomeClient from '../components/HomeClient';
 
 export default function HomePage() {
-  return <div>Homepage (placeholder)</div>;
+  return <HomeClient />;
 } 
