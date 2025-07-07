@@ -1,15 +1,14 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 
-interface ArticleCardProps {
+interface FeaturedArticleProps {
   article: any;
-  index?: number;
 }
 
-export default function ArticleCard({ article }: ArticleCardProps) {
+export default function FeaturedArticle({ article }: FeaturedArticleProps) {
   return (
-    <Card className="hover:shadow-lg transition flex flex-col">
+    <Card className="mb-8">
       <CardHeader>
-        <CardTitle>{article?.title || 'Article Title'}</CardTitle>
+        <CardTitle>Featured Article</CardTitle>
         <CardDescription>{article?.category || 'Category'} • • {article?.publishedDate ? new Date(article.publishedDate).toISOString().slice(0, 10) : 'Date'}</CardDescription>
       </CardHeader>
       <CardContent>
@@ -22,6 +21,8 @@ export default function ArticleCard({ article }: ArticleCardProps) {
         ) : (
           <div className="h-40 bg-gray-300 dark:bg-gray-700 rounded mb-2" />
         )}
+        <h3 className="text-xl font-semibold">{article?.title || 'Article Title'}</h3>
+        <p className="text-gray-600 dark:text-gray-300">{article?.category || 'Category'} • {article?.publishedDate ? new Date(article.publishedDate).toISOString().slice(0, 10) : 'Date'}</p>
       </CardContent>
     </Card>
   );
