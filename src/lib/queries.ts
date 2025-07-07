@@ -1,0 +1,2 @@
+// GraphQL queries (placeholder)
+export {}; 
