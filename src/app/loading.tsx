@@ -1,3 +1,3 @@
 export default function GlobalLoading() {
-  return null;
+  return <div>Loading...</div>;
 } 
