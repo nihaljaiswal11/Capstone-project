@@ -9,7 +9,7 @@ export default function FeaturedArticle({ article }: FeaturedArticleProps) {
     <Card className="mb-8">
       <CardHeader>
         <CardTitle>Featured Article</CardTitle>
-        <CardDescription>{article?.category || 'Category'} • • {article?.publishedDate ? new Date(article.publishedDate).toISOString().slice(0, 10) : 'Date'}</CardDescription>
+        <CardDescription>{article?.category || 'Category'} • {article?.publishedDate ? new Date(article.publishedDate).toISOString().slice(0, 10) : 'Date'}</CardDescription>
       </CardHeader>
       <CardContent>
         {article?.coverImage?.url ? (
