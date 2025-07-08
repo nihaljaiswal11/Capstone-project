@@ -1,5 +1,3 @@
-// app/category/[slug]/page.tsx
-
 import {
   Card,
   CardContent,
@@ -71,28 +69,32 @@ export default async function CategoryPage(props: { params: { slug: string } }) 
   }
 
   return (
-    <main className="max-w-5xl mx-auto px-4 py-10">
-      <h1 className="text-3xl font-bold mb-6 capitalize">
+    <main className="w-full max-w-5xl mx-auto px-2 sm:px-4 md:px-6 py-6 md:py-10">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6 capitalize">
         Articles in "{slug}" category
       </h1>
 
       {articles.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {articles.map((article) => (
             <Card key={article.slug} className="overflow-hidden shadow-md hover:shadow-xl transition">
-              <img
-                src={article.coverImage?.url}
-                alt={article.title}
-                className="w-full h-48 object-cover"
-              />
+              {article.coverImage?.url ? (
+                <img
+                  src={article.coverImage.url}
+                  alt={article.title}
+                  className="w-full h-40 sm:h-48 object-cover"
+                />
+              ) : (
+                <div className="w-full h-40 sm:h-48 bg-gray-300 dark:bg-gray-700 rounded mb-2" />
+              )}
               <CardContent className="p-4">
                 <Link href={`/article/${article.slug}`}>
-                  <h2 className="text-lg font-semibold hover:underline line-clamp-2">
+                  <h2 className="text-base sm:text-lg font-semibold hover:underline line-clamp-2">
                     {article.title}
                   </h2>
                 </Link>
-                <p className="text-sm text-gray-500 mt-1">
-                  {new Date(article.publishedDate).toLocaleDateString()}
+                <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                  {new Date(article.publishedDate).toISOString().slice(0, 10)}
                 </p>
               </CardContent>
             </Card>
