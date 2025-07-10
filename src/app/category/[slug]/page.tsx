@@ -36,9 +36,13 @@ const GET_CATEGORY_ARTICLES = `
 
 const PAGE_SIZE = 9;
 
-export default async function CategoryPage(props: { params: { slug: string }, searchParams: { page?: string } }) {
+export default async function CategoryPage(props: { 
+  params: Promise<{ slug: string }>, 
+  searchParams: Promise<{ page?: string }> 
+}) {
   const { slug } = await props.params;
-  const page = Number(props.searchParams?.page || 1);
+  const searchParams = await props.searchParams;
+  const page = Number(searchParams?.page || 1);
   const skip = (page - 1) * PAGE_SIZE;
 
   console.log("slug:", slug);
