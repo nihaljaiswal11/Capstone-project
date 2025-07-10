@@ -54,8 +54,8 @@ function renderRichText(body: any) {
   });
 }
 
-export default async function ArticleDetailPage({ params }: { params: { slug: string } }) {
-  const { slug } = await params;
+export default async function ArticleDetailPage(props: { params: Promise<{ slug: string }> }) {
+  const { slug } = await props.params;
   console.log("slug:", slug);
 
   let article: any = null;
@@ -75,9 +75,9 @@ export default async function ArticleDetailPage({ params }: { params: { slug: st
     const json = await res.json();
     console.log("Full Contentful response:", json);
     article = json?.data?.articleCollection?.items?.[0];
-    console.log("article:",article);
-    
-    
+    console.log("article:", article);
+
+
 
     // Fetch related articles if article found
     if (article) {
