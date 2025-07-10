@@ -1,17 +1,30 @@
 "use client";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export default function ImageSlideshow({ images }: { images: string[] }) {
   const [current, setCurrent] = useState(0);
   if (!images.length) return null;
+  // Optimize Contentful image URL for slideshow size
+  const imgUrl = images[current]
+    ? `${images[current]}?w=800&h=320&fit=fill`
+    : null;
   return (
     <div className="relative w-full h-56 sm:h-72 mb-2">
-      <img
-        src={images[current]}
-        alt={`Slide ${current + 1}`}
-        className="w-full h-56 sm:h-72 object-cover rounded"
-      />
+      {imgUrl && (
+        <Image
+          src={imgUrl}
+          alt={`Slide ${current + 1}`}
+          width={800}
+          height={320}
+          className="w-full h-56 sm:h-72 object-cover rounded"
+          style={{ aspectRatio: "2.5/1" }}
+          loading="lazy"
+          priority={false}
+          sizes="(max-width: 768px) 100vw, 66vw"
+        />
+      )}
       {images.length > 1 && (
         <>
           <Button
