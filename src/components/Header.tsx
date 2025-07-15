@@ -56,6 +56,13 @@ export default function Header() {
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
+              <NavigationMenuLink asChild active={pathname === "/bookmarks"}>
+                <Link href="/bookmarks" aria-label="Bookmarks" className="ml-2">
+                  <span role="img" aria-label="bookmark">🔖</span> Bookmarks
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
               <button
                 onClick={toggle}
                 className="ml-2 p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition"
@@ -88,6 +95,9 @@ export default function Header() {
               {/* Add more categories here if needed */}
               <Link href="/search" className={pathname === "/search" ? "font-semibold underline mt-2" : "mt-2"}>
                 <span role="img" aria-label="search">🔍</span> Search
+              </Link>
+              <Link href="/bookmarks" className={pathname === "/bookmarks" ? "font-semibold underline mt-2" : "mt-2"}>
+                <span role="img" aria-label="bookmark">🔖</span> Bookmarks
               </Link>
               <button
                 onClick={toggle}

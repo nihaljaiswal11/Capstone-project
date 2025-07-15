@@ -1,11 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { notFound } from "next/navigation";
 import Link from "next/link";
 import BookmarkButton from "./BookmarkButton";
 import ImageSlideshow from "./ImageSlideshow";
-import ShareButtons from "./ShareButtons"
-import { log } from "console";
-import Image from "next/image";
+import ShareButtons from "./ShareButtons";
+
 
 const CONTENTFUL_SPACE_ID = process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID;
 const CONTENTFUL_ACCESS_TOKEN = process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN;
@@ -42,10 +40,7 @@ function formatDate(date: string) {
 }
 
 function renderRichText(body: any) {
-  // For demo: just render as paragraphs from the JSON if available
   if (!body || !body.json) return <p className="text-gray-500">No content.</p>;
-  // This is a minimal renderer for Contentful rich text JSON
-  // For production, use @contentful/rich-text-react-renderer
   return body.json.content?.map((node: any, i: number) => {
     if (node.nodeType === "paragraph") {
       return <p key={i} className="mb-2">{node.content.map((c: any) => c.value).join("")}</p>;
@@ -77,8 +72,6 @@ export default async function ArticleDetailPage(props: { params: Promise<{ slug:
     article = json?.data?.articleCollection?.items?.[0];
     console.log("article:", article);
 
-
-
     // Fetch related articles if article found
     if (article) {
       const relRes = await fetch(CONTENTFUL_GRAPHQL_URL, {
@@ -98,10 +91,12 @@ export default async function ArticleDetailPage(props: { params: Promise<{ slug:
   }
 
   if (!article) {
-    return <main className="w-full max-w-2xl mx-auto px-2 sm:px-4 md:px-6 py-6 md:py-10">
-      <h1 className="text-2xl font-bold mb-4">Article not found</h1>
-      <p className="text-gray-500">We couldn't find the article you were looking for.</p>
-    </main>;
+    return (
+      <main className="w-full max-w-2xl mx-auto px-2 sm:px-4 md:px-6 py-6 md:py-10">
+        <h1 className="text-2xl font-bold mb-4">Article not found</h1>
+        <p className="text-gray-500">We couldn't find the article you were looking for.</p>
+      </main>
+    );
   }
 
   // For now, use only the cover image for the slideshow
