@@ -3,6 +3,7 @@ import Link from "next/link";
 import BookmarkButton from "./BookmarkButton";
 import ImageSlideshow from "./ImageSlideshow";
 import ShareButtons from "./ShareButtons";
+import { notFound } from "next/navigation";
 
 
 const CONTENTFUL_SPACE_ID = process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID;
@@ -91,12 +92,7 @@ export default async function ArticleDetailPage(props: { params: Promise<{ slug:
   }
 
   if (!article) {
-    return (
-      <main className="w-full max-w-2xl mx-auto px-2 sm:px-4 md:px-6 py-6 md:py-10">
-        <h1 className="text-2xl font-bold mb-4">Article not found</h1>
-        <p className="text-gray-500">We couldn't find the article you were looking for.</p>
-      </main>
-    );
+    notFound();
   }
 
   // For now, use only the cover image for the slideshow

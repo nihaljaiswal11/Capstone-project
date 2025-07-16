@@ -1,14 +1,10 @@
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useSearchParams, useRouter } from "next/navigation";
+import { notFound } from "next/navigation";
 
 const CONTENTFUL_SPACE_ID = process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID;
 const CONTENTFUL_ACCESS_TOKEN = process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN;
@@ -82,6 +78,10 @@ export default async function CategoryPage(props: {
     total = data?.articleCollection?.total || 0;
   } catch (error) {
     console.error("Error fetching category articles:", error);
+  }
+
+  if (!slug || articles.length === 0) {
+    notFound();
   }
 
   const totalPages = Math.ceil(total / PAGE_SIZE);
