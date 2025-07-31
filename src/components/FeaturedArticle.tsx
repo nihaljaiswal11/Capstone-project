@@ -16,7 +16,7 @@ export default function FeaturedArticle({ article }: FeaturedArticleProps) {
         {article?.coverImage?.url ? (
           <Image
             src={article.coverImage.url}
-            alt={article.title}
+            alt={article.title || "Article image"}
             width={800}
             height={320}
             className="w-full h-40 object-cover rounded mb-2"
