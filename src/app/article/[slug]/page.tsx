@@ -4,37 +4,8 @@ import BookmarkButton from "./BookmarkButton";
 import ImageSlideshow from "./ImageSlideshow";
 import ShareButtons from "./ShareButtons";
 import { notFound } from "next/navigation";
-
-
-const CONTENTFUL_SPACE_ID = process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID;
-const CONTENTFUL_ACCESS_TOKEN = process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN;
-const CONTENTFUL_GRAPHQL_URL = `https://graphql.contentful.com/content/v1/spaces/${CONTENTFUL_SPACE_ID}`;
-
-const GET_ARTICLE_BY_SLUG = `
-  query GetArticleBySlug($slug: String!) {
-    articleCollection(where: { slug: $slug }, limit: 1) {
-      items {
-        title
-        slug
-        publishedDate
-        category
-        coverImage { url }
-        body { json }
-      }
-    }
-  }
-`;
-
-const GET_RELATED_ARTICLES = `
-  query GetRelatedArticles($category: String!, $slug: String!) {
-    articleCollection(where: { category: $category, slug_not: $slug }, limit: 5) {
-      items {
-        title
-        slug
-      }
-    }
-  }
-`;
+import { fetchContentful } from "@/lib/contentful";
+import { GET_ARTICLE_BY_SLUG, GET_RELATED_ARTICLES } from "@/lib/queries";
 
 function formatDate(date: string) {
   return new Date(date).toISOString().slice(0, 10);
@@ -52,39 +23,16 @@ function renderRichText(body: any) {
 
 export default async function ArticleDetailPage(props: { params: Promise<{ slug: string }> }) {
   const { slug } = await props.params;
-  console.log("slug:", slug);
-
   let article: any = null;
   let related: any[] = [];
 
   try {
     // Fetch article
-    const res = await fetch(CONTENTFUL_GRAPHQL_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${CONTENTFUL_ACCESS_TOKEN}`,
-      },
-      body: JSON.stringify({ query: GET_ARTICLE_BY_SLUG, variables: { slug } }),
-      next: { revalidate: 60 },
-    });
-    const json = await res.json();
-    console.log("Full Contentful response:", json);
+    const json = await fetchContentful(GET_ARTICLE_BY_SLUG, { slug });
     article = json?.data?.articleCollection?.items?.[0];
-    console.log("article:", article);
-
     // Fetch related articles if article found
     if (article) {
-      const relRes = await fetch(CONTENTFUL_GRAPHQL_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${CONTENTFUL_ACCESS_TOKEN}`,
-        },
-        body: JSON.stringify({ query: GET_RELATED_ARTICLES, variables: { category: article.category, slug } }),
-        next: { revalidate: 60 },
-      });
-      const relJson = await relRes.json();
+      const relJson = await fetchContentful(GET_RELATED_ARTICLES, { category: article.category, slug });
       related = relJson?.data?.articleCollection?.items || [];
     }
   } catch (error) {

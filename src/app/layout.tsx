@@ -3,6 +3,10 @@ import { Inter } from 'next/font/google';
 import Header from '../components/Header';
 import ThemeHydration from '../components/ThemeHydration';
 
+export const metadata = {
+  title: "News Site - Modern Next.js & Contentful App",
+};
+
 const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
